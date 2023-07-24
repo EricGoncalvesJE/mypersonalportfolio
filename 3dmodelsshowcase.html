@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Axe showcase</title>
+
+    <!-- Babylon.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+    <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+    <script src="https://preview.babylonjs.com/ammo.js"></script>
+    <script src="https://preview.babylonjs.com/cannon.js"></script>
+    <script src="https://preview.babylonjs.com/Oimo.js"></script>
+    <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+    <script src="https://preview.babylonjs.com/babylon.js"></script>
+    <script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+    <script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+    <script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+    <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+    <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+    <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <script>
+        var canvas = document.getElementById("renderCanvas");
+
+        var startRenderLoop = function (engine, canvas) {
+            engine.runRenderLoop(function () {
+                if (sceneToRender && sceneToRender.activeCamera) {
+                    sceneToRender.render();
+                }
+            });
+        }
+
+        var engine = null;
+        var scene = null;
+        var sceneToRender = null;
+        var createDefaultEngine = function () { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true, disableWebGL2Support: false }); };
+        var createScene = function () {
+            // This creates a basic Babylon Scene object (non-mesh)
+            var scene = new BABYLON.Scene(engine);
+
+            // This creates and positions a free camera (non-mesh)
+            var camera = new BABYLON.ArcRotateCamera("Camera", 1, 1.5, 10, BABYLON.Vector3.Zero(), scene);
+
+            // This attaches the camera to the canvas
+            camera.attachControl(canvas, true);
+
+            //Mouse wheel speed
+            camera.wheelPrecision = 80;
+
+            //Mouse wheel zoom range
+            //Zoom-in limit
+            camera.lowerRadiusLimit = 8;
+            //Zoom-out limit
+            camera.upperRadiusLimit = 25;
+
+            //Create initial mesh variables. 
+            var mesh1;
+            var mesh2;
+            var mesh3;
+            var mesh4;
+            var mesh5;
+
+            // The first parameter can be used to specify which mesh to import. Here we import all meshes
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "maze1.glb", scene, function (newMaze1) {
+                maze1 = newMaze1;
+                mesh1 = maze1[0];
+            });
+
+            //import second mesh and position
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "maze2.glb", scene, function (newMaze2) {
+                maze2 = newMaze2;
+                mesh2 = maze2[0];
+                mesh2.position.z = 8;
+            });
+
+            //import third mesh and position
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "maze3.glb", scene, function (newMaze3) {
+                maze3 = newMaze3;
+                mesh3 = maze3[0];
+                mesh3.position.z = 19;
+            });
+
+            //import fourth mesh and position
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "maze4.glb", scene, function (newMaze4) {
+                maze4 = newMaze4;
+                mesh4 = maze4[0];
+                mesh4.position.z = 31;
+                 console.log("mesh4:", mesh4);
+            });
+
+            //import fifth mesh and position
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "maze5.glb", scene, function (newMaze5) {
+                maze5 = newMaze5;
+                mesh5 = maze5[0];
+                mesh5.position.z = 44;
+            });
+
+
+            // Spheres for the UI buttons to focus on 
+            var sphere1 = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
+            sphere1.isVisible = false;
+            sphere1.position.y = 0;
+            sphere1.position.z = 0;
+            sphere1.position.x = 0;
+
+            var sphere2 = BABYLON.Mesh.CreateSphere("sphere2", 16, 1, scene);
+            sphere2.isVisible = false;
+            sphere2.position.y = 0;
+            sphere2.position.z = 8;
+            sphere2.position.x = 0;
+
+            var sphere3 = BABYLON.Mesh.CreateSphere("sphere3", 16, 1, scene);
+            sphere3.isVisible = false;
+            sphere3.position.y = 0;
+            sphere3.position.z = 19;
+            sphere3.position.x = 0;
+
+            var sphere4 = BABYLON.Mesh.CreateSphere("sphere3", 16, 1, scene);
+            sphere4.isVisible = false;
+            sphere4.position.y = 0;
+            sphere4.position.z = 31;
+            sphere4.position.x = 0;
+
+            var sphere5 = BABYLON.Mesh.CreateSphere("sphere3", 16, 1, scene);
+            sphere5.isVisible = false;
+            sphere5.position.y = 0;
+            sphere5.position.z = 44;
+            sphere5.position.x = 0;
+
+
+
+            // HDRI
+            var hdrTexture = new BABYLON.CubeTexture("textures/outside.env", scene);
+            var sky = scene.createDefaultSkybox(hdrTexture, true);
+
+            // GUI
+            var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+            var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+            var advancedTexture3 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+            var advancedTexture4 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+            var advancedTexture5 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+            var advancedTexture6 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+            //Wireframe button
+            var buttonW = BABYLON.GUI.Button.CreateSimpleButton("wireframeButton", "Wireframe");
+            buttonW.left = "-40%";
+            buttonW.width = 0.2;
+            buttonW.height = "5%";
+            buttonW.color = "white";
+            buttonW.background = "black";
+            buttonW.onPointerUpObservable.add(function () {
+                if (maze1 && maze1[1] && maze1[1].material) {
+                    maze1[1].material.wireframe = !maze1[1].material.wireframe;
+                }
+                if (maze2 && maze2[1] && maze2[1].material) {
+                    maze2[1].material.wireframe = !maze2[1].material.wireframe;
+                }
+                if (maze3 && maze3[1] && maze3[1].material) {
+                    maze3[1].material.wireframe = !maze3[1].material.wireframe;
+                }
+                if (maze4 && maze4[1] && maze4[1].material) {
+                    maze4[1].material.wireframe = !maze4[1].material.wireframe;
+                }
+                if (maze5 && maze5[1] && maze5[1].material) {
+                    maze5[1].material.wireframe = !maze5[1].material.wireframe;
+                }
+            });
+
+
+            advancedTexture6.addControl(buttonW);
+            
+
+            //Button A
+            var buttonA = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
+            advancedTexture.addControl(buttonA);
+
+            buttonA.width = "40px"
+            buttonA.height = "40px";
+            buttonA.cornerRadius = 30;
+            buttonA.background = "transparent";
+            buttonA.linkWithMesh(sphere1);
+
+            //Button Funtionality
+            buttonA.onPointerEnterObservable.add(function () {
+                buttonA.background = "grey";
+            });
+            buttonA.onPointerOutObservable.add(function () {
+                buttonA.background = "transparent";
+            });
+            buttonA.onPointerUpObservable.add(function () {
+                camera.target = sphere1;
+            });
+
+            //Button B
+            var buttonB = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
+            advancedTexture2.addControl(buttonB);
+
+            buttonB.width = "40px"
+            buttonB.height = "40px";
+            buttonB.cornerRadius = 30;
+            buttonB.background = "transparent";
+            buttonB.linkWithMesh(sphere2);
+
+            //Button Funtionality
+            buttonB.onPointerEnterObservable.add(function () {
+                buttonB.background = "grey";
+            });
+            buttonB.onPointerOutObservable.add(function () {
+                buttonB.background = "transparent";
+            });
+            buttonB.onPointerUpObservable.add(function () {
+                camera.target = sphere2;
+            });
+
+            //Button C
+            var buttonC = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
+            advancedTexture3.addControl(buttonC);
+            buttonC.width = "40px"
+            buttonC.height = "40px";
+            buttonC.cornerRadius = 30;
+            buttonC.background = "transparent";
+            buttonC.linkWithMesh(sphere3);
+
+            //Button Funtionality
+            buttonC.onPointerEnterObservable.add(function () {
+                buttonC.background = "grey";
+            });
+            buttonC.onPointerOutObservable.add(function () {
+                buttonC.background = "transparent";
+            });
+            buttonC.onPointerUpObservable.add(function () {
+                camera.target = sphere3;
+            });
+
+            //Button D
+            var buttonD = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
+            advancedTexture4.addControl(buttonD);
+            buttonD.width = "40px"
+            buttonD.height = "40px";
+            buttonD.cornerRadius = 30;
+            buttonD.background = "transparent";
+            buttonD.linkWithMesh(sphere4);
+
+            //Button Funtionality
+            buttonD.onPointerEnterObservable.add(function () {
+                buttonD.background = "grey";
+            });
+            buttonD.onPointerOutObservable.add(function () {
+                buttonD.background = "transparent";
+            });
+            buttonD.onPointerUpObservable.add(function () {
+                camera.target = sphere4;
+            });
+
+            //Button E
+            var buttonE = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
+            advancedTexture5.addControl(buttonE);
+            buttonE.width = "40px"
+            buttonE.height = "40px";
+            buttonE.cornerRadius = 30;
+            buttonE.background = "transparent";
+            buttonE.linkWithMesh(sphere5);
+
+            //Button Funtionality
+            buttonE.onPointerEnterObservable.add(function () {
+                buttonE.background = "grey";
+            });
+            buttonE.onPointerOutObservable.add(function () {
+                buttonC.background = "transparent";
+            });
+            buttonE.onPointerUpObservable.add(function () {
+                camera.target = sphere5;
+            });
+
+
+            // instrctions
+            const image = new BABYLON.GUI.Image("", "textures/instructions.png");
+            image.width = "350px";
+            image.height = "175px";
+            image.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+            image.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+
+            // Add the image to the UI
+            advancedTexture.addControl(image);
+
+
+            return scene;
+        };
+        window.initFunction = async function () {
+
+
+            var asyncEngineCreation = async function () {
+                try {
+                    return createDefaultEngine();
+                } catch (e) {
+                    console.log("the available createEngine function failed. Creating the default engine instead");
+                    return createDefaultEngine();
+                }
+            }
+
+            window.engine = await asyncEngineCreation();
+            if (!engine) throw 'engine should not be null.';
+            startRenderLoop(engine, canvas);
+            window.scene = createScene();
+        };
+        initFunction().then(() => {
+            sceneToRender = scene
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+</body>
+
+</html>
