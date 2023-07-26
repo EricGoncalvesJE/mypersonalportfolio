@@ -3226,7 +3226,7 @@ textarea.form-control.is-invalid {
   --bs-btn-font-size: 1rem;
   --bs-btn-font-weight: 400;
   --bs-btn-line-height: 1.5;
-  --bs-btn-color: #212529;
+  --bs-btn-color: #222222;
   --bs-btn-bg: transparent;
   --bs-btn-border-width: 1px;
   --bs-btn-border-color: transparent;
@@ -3317,19 +3317,19 @@ fieldset:disabled .btn {
 
 .btn-primary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #64a19d;
-  --bs-btn-border-color: #64a19d;
-  --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #558985;
-  --bs-btn-hover-border-color: #50817e;
+  --bs-btn-bg: #444444;
+  --bs-btn-border-color: #fff;
+  --bs-btn-hover-color: #222222;
+  --bs-btn-hover-bg: #666666;
+  --bs-btn-hover-border-color: #666666;
   --bs-btn-focus-shadow-rgb: 123, 175, 172;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #50817e;
-  --bs-btn-active-border-color: #4b7976;
+  --bs-btn-active-bg: #666666;
+  --bs-btn-active-border-color: #fff;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #64a19d;
-  --bs-btn-disabled-border-color: #64a19d;
+  --bs-btn-disabled-bg: #fff;
+  --bs-btn-disabled-border-color: #666666;
 }
 
 .btn-secondary {
@@ -9151,6 +9151,7 @@ fieldset:disabled .btn {
 
 .text-center {
   text-align: center !important;
+  padding: 10px;
 }
 
 .text-decoration-none {
@@ -13042,7 +13043,6 @@ body {
 .arrow {
   color: white;
   font-size: 48px;
-
 }
 
 /* invisible card*/
@@ -13054,7 +13054,7 @@ body {
     font-family: 'Domine', serif;
     font-size: 18px;
     flex-shrink: 0;
-    width:  320px;
+    width:  400px;
     height: 250px;
     margin: 5px;
     border-radius: 75px;
@@ -13074,7 +13074,8 @@ body {
 .container-title {
   font-size: 30px;
   color: white;
-  padding-top: 15%;
+  padding-top: 10%;
+  padding-right: 1%;
   text-align: right;
   font-family: 'Lobster', cursive;
 }
@@ -13093,8 +13094,9 @@ body {
   font-family: 'Domine', serif;
   font-size: 18px;
   flex-shrink: 0;
-  width: 350px;
+  width: 300px;
   height: 250px;
+  padding: 24px;
   margin: 5px;
   border-radius: 25px;
   background-color: black;
@@ -13116,7 +13118,8 @@ body {
 #timeline {
   display: flex;
   background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.95) 40%, rgba(0, 0, 0, 0.8) 100%);
-
+  transform: scale(1);
+  
   &:hover {
     .tl-item {
       width: 23.3333%;
