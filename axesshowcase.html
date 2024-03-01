@@ -37,25 +37,43 @@
             height: 100%;
             touch-action: none;
         }
-    #preloader {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 9999;
-      background-color: rgba(0, 0, 0, 0.5); 
-    }
-  
-    /* Center the loader */
-    #loader {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 40px;
-      color: #fff;
-    }
+        #preloader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Stack the loader and the text vertically */
+}
+
+        /* Create a spinning loader */
+        #loader {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 2s linear infinite;
+            margin-bottom: 20px; /* Add some space between the loader and the text */
+        }
+
+        /* Spin animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #loader-text {
+            color: #fff;
+            font-size: 40px;
+            text-align: center;
+        }
+
     </style>
 </head>
 
@@ -63,7 +81,8 @@
 <body>
     <!-- Preloader -->
     <div id="preloader">
-        <div id="loader">Loading, the 3D models can take a while to show up. Thanks for waiting.</div>
+        <div id="loader"></div>
+        <p id="loader-text">Loading, the 3D models can take a while to show up. Thanks for waiting.</p>
     </div>
 
     <canvas id="renderCanvas"></canvas>
