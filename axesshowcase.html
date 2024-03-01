@@ -132,7 +132,6 @@
             var mesh3;
             var mesh4;
 
-           // Create an array to hold all the promises
             var promises = [];
 
             // First mesh import
@@ -182,10 +181,12 @@
 
             // Wait for all promises to resolve
             Promise.all(promises).then(function () {
-                // All models have loaded, hide the preloader
-                document.getElementById('preloader').style.display = 'none';
+                // All models have loaded into memory, now wait for the scene to be ready
+                scene.executeWhenReady(function () {
+                    // The scene is ready, hide the preloader
+                    document.getElementById('preloader').style.display = 'none';
+                });
             });
-
 
             // Spheres for the UI buttons to focus on 
             var sphere1 = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
