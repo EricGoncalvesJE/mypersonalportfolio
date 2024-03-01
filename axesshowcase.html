@@ -82,7 +82,7 @@
             var mesh3;
             var mesh4;
 
-            // The first parameter can be used to specify which mesh to import. Here we import all meshes
+            // First mesh import
             BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "Axe1.2.glb", scene, function (axe1) {
                 mesh1 = axe1[0];
                 mesh1.position.z = 4;
@@ -99,11 +99,16 @@
                 mesh3.position.z = -4;
             });
 
-            //import fourth mesh
+            //import mammoth tooth
             BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "mammoth_tooth.glb", scene, function (tooth) {
                 mesh4 = tooth[0];
-                mesh4.position.z = -8;
+                mesh4.position.x = -4;
                 mesh4.position.y = -1;
+            });
+            //import iron cast
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "iron_final1.glb", scene, function (tooth) {
+                mesh5 = tooth[0];
+                mesh5.position.x = 4;
             });
 
             // Spheres for the UI buttons to focus on 
@@ -128,10 +133,16 @@
             var sphere4 = BABYLON.Mesh.CreateSphere("sphere4", 16, 1, scene);
             sphere4.isVisible = false;
             sphere4.position.y = 0;
-            sphere4.position.z = -8;
-            sphere4.position.x = 0;            
+            sphere4.position.z = 0;
+            sphere4.position.x = -4;
 
-           // Define your HDRIs
+            var sphere5 = BABYLON.Mesh.CreateSphere("sphere5", 16, 1, scene);
+            sphere5.isVisible = false;
+            sphere5.position.y = 0;
+            sphere5.position.z = 0;
+            sphere5.position.x = 4;
+
+            // HDRIs
             var hdrTextures = [
                 new BABYLON.CubeTexture("textures/outside.env", scene),
                 new BABYLON.CubeTexture("textures/outside2.env", scene),
@@ -146,20 +157,20 @@
             var sky = scene.createDefaultSkybox(hdrTextures[currentTextureIndex], true, 1000, 0.3);
 
             // Create a button
-            var advancedTexture5 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+            var advancedTexture6 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
             var button = document.createElement("button");
             button.innerHTML = "Change background";
             button.style.position = "fixed";
             button.style.top = "50%";
-            button.style.transform = "translateY(-50%)";    
-            button.style.borderRadius = "14px"; 
+            button.style.transform = "translateY(-50%)";
+            button.style.borderRadius = "14px";
             button.style.border = "4px solid white";
             button.style.right = "0px";
             button.style.margin = "25px";
 
-            button.style.width = "110px";    
-            button.style.height = "60px";   
+            button.style.width = "110px";
+            button.style.height = "60px";
 
             button.style.backgroundColor = "black";
             button.style.color = "white";
@@ -184,10 +195,11 @@
             //var sky = scene.createDefaultSkybox(hdrTexture, true);
 
             // GUI
-            var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-            var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-            var advancedTexture3 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-            var advancedTexture4 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+            var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); //Axe 1 button
+            var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); //Axe 2 button
+            var advancedTexture3 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); //Axe 3 button
+            var advancedTexture4 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); //Tooth button
+            var advancedTexture5 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); //Iron object button
 
             //Button A
             var buttonA = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
@@ -269,6 +281,27 @@
             });
             buttonD.onPointerUpObservable.add(function () {
                 camera.target = sphere4;
+            });
+
+            //Button E
+            var buttonE = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
+            advancedTexture5.addControl(buttonE);
+
+            buttonE.width = "35px"
+            buttonE.height = "35px";
+            buttonE.cornerRadius = 30;
+            buttonE.background = "transparent";
+            buttonE.linkWithMesh(sphere5);
+
+            //Button Funtionality
+            buttonE.onPointerEnterObservable.add(function () {
+                buttonE.background = "grey";
+            });
+            buttonE.onPointerOutObservable.add(function () {
+                buttonE.background = "transparent";
+            });
+            buttonE.onPointerUpObservable.add(function () {
+                camera.target = sphere5;
             });
 
 

@@ -494,7 +494,7 @@ legend+* {
   outline-offset: -2px;
   -webkit-appearance: textfield;
   -moz-appearance: none;
-    appearance: none;
+  appearance: none;
 }
 
 /* rtl:raw:
@@ -516,8 +516,8 @@ legend+* {
 ::file-selector-button {
   font: inherit;
   -webkit-appearance: button;
-    -moz-appearance: none;
-      appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 output {
@@ -12848,9 +12848,9 @@ body {
     color: #fff;
   }
 
-#mainNav.navbar-shrink {
-  background-color: rgba(255, 255, 255, 0.75);
-}
+  #mainNav.navbar-shrink {
+    background-color: rgba(255, 255, 255, 0.75);
+  }
 
   #mainNav.navbar-shrink .navbar-brand {
     color: #000;
@@ -12916,7 +12916,7 @@ body {
 .masthead .h2 {
   max-width: 20rem;
   font-size: 1rem;
-} 
+}
 
 @media (min-width: 768px) {
 
@@ -12957,7 +12957,7 @@ body {
 }
 
 .projects-section {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 1) 15%, rgba(0, 0, 0, 0.85) 75%, rgba(0, 0, 0, 1) 100% );
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 1) 15%, rgba(0, 0, 0, 0.85) 75%, rgba(0, 0, 0, 1) 100%);
   padding: 5rem 0;
 }
 
@@ -12967,9 +12967,9 @@ body {
   font-size: 26px;
 }
 
-.project-title{
-    font-family: 'Lobster', cursive;
-    font-size: 24px;
+.project-title {
+  font-family: 'Lobster', cursive;
+  font-size: 24px;
 }
 
 @media (min-width: 992px) {
@@ -13047,19 +13047,19 @@ body {
 
 /* invisible card*/
 .card-1 {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    text-indent: 5%;
-    font-family: 'Domine', serif;
-    font-size: 18px;
-    flex-shrink: 0;
-    width:  400px;
-    height: 250px;
-    margin: 5px;
-    border-radius: 75px;
-    background-color: transparent;
-    color: white;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  text-indent: 5%;
+  font-family: 'Domine', serif;
+  font-size: 18px;
+  flex-shrink: 0;
+  width: 400px;
+  height: 250px;
+  margin: 5px;
+  border-radius: 75px;
+  background-color: transparent;
+  color: white;
 }
 
 .skills-container {
@@ -13104,7 +13104,7 @@ body {
 }
 
 #skills {
-  background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.95) 20%, rgba(0, 0, 0, 0.8) 100%); 
+  background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.95) 20%, rgba(0, 0, 0, 0.8) 100%);
 }
 
 .responsive-video {
@@ -13119,7 +13119,7 @@ body {
   display: flex;
   background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.95) 40%, rgba(0, 0, 0, 0.8) 100%);
   transform: scale(1);
-  
+
   &:hover {
     .tl-item {
       width: 23.3333%;
@@ -13138,7 +13138,8 @@ body {
   overflow: hidden;
   transition: width 0.5s ease;
 
-  &:before,&:after {
+  &:before,
+  &:after {
     transform: translate3d(0, 0, 0);
     content: '';
     position: absolute;
