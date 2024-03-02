@@ -30,6 +30,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
         #renderCanvas {
@@ -77,7 +78,6 @@
     </style>
 </head>
 
-
 <body>
     <!-- Preloader -->
     <div id="preloader">
@@ -87,11 +87,10 @@
 
     <canvas id="renderCanvas"></canvas>
     <script>
-
-         // Hide the preloader after the page has loaded
-        window.addEventListener('load', function () {
-        document.getElementById('preloader').style.display = 'none';
-        });
+        // Hide the preloader after 5 seconds
+        setTimeout(function () {
+            document.getElementById('preloader').style.display = 'none';
+        }, 5000); // 5000 milliseconds = 5 seconds
 
         var canvas = document.getElementById("renderCanvas");
 
@@ -132,60 +131,33 @@
             var mesh3;
             var mesh4;
 
-            var promises = [];
-
             // First mesh import
-            promises.push(new Promise(function (resolve) {
-                BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "Axe1.2.glb", scene, function (axe1) {
-                    mesh1 = axe1[0];
-                    mesh1.position.z = 4;
-                    resolve();
-                });
-            }));
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "Axe1.2.glb", scene, function (axe1) {
+                mesh1 = axe1[0];
+                mesh1.position.z = 4;
+            });
 
-            // Import second mesh
-            promises.push(new Promise(function (resolve) {
-                BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "Axe2.glb", scene, function (axe2) {
-                    mesh2 = axe2[0];
-                    resolve();
-                });
-            }));
+            //import second mesh
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "Axe2.glb", scene, function (axe2) {
+                mesh2 = axe2[0];
+            });
 
-            // Import third mesh
-            promises.push(new Promise(function (resolve) {
-                BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "Axe3.glb", scene, function (axe3) {
-                    mesh3 = axe3[0];
-                    mesh3.position.z = -4;
-                    resolve();
-                });
-            }));
+            //import third mesh
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "Axe3.glb", scene, function (axe3) {
+                mesh3 = axe3[0];
+                mesh3.position.z = -4;
+            });
 
-            // Import mammoth tooth
-            promises.push(new Promise(function (resolve) {
-                BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "mammoth_tooth.glb", scene, function (tooth) {
-                    mesh4 = tooth[0];
-                    mesh4.position.x = -4;
-                    mesh4.position.y = -1;
-                    resolve();
-                });
-            }));
-
-            // Import iron cast
-            promises.push(new Promise(function (resolve) {
-                BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "iron_final1.glb", scene, function (tooth) {
-                    mesh5 = tooth[0];
-                    mesh5.position.x = 4;
-                    resolve();
-                });
-            }));
-
-            // Wait for all promises to resolve
-            Promise.all(promises).then(function () {
-                // All models have loaded into memory, now wait for the scene to be ready
-                scene.executeWhenReady(function () {
-                    // The scene is ready, hide the preloader
-                    document.getElementById('preloader').style.display = 'none';
-                });
+            //import mammoth tooth
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "mammoth_tooth.glb", scene, function (tooth) {
+                mesh4 = tooth[0];
+                mesh4.position.x = -4;
+                mesh4.position.y = -1;
+            });
+            //import iron cast
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "iron_final1.glb", scene, function (tooth) {
+                mesh5 = tooth[0];
+                mesh5.position.x = 4;
             });
 
             // Spheres for the UI buttons to focus on 
