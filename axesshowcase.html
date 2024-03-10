@@ -38,6 +38,7 @@
             height: 100%;
             touch-action: none;
         }
+
         #preloader {
             position: fixed;
             left: 0;
@@ -49,8 +50,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column; /* Stack the loader and the text vertically */
-}
+            flex-direction: column;
+            /* Stack the loader and the text vertically */
+        }
 
         /* Create a spinning loader */
         #loader {
@@ -60,13 +62,19 @@
             width: 80px;
             height: 80px;
             animation: spin 2s linear infinite;
-            margin-bottom: 20px; /* Add some space between the loader and the text */
+            margin-bottom: 20px;
+            /* Add some space between the loader and the text */
         }
 
         /* Spin animation */
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         #loader-text {
@@ -74,7 +82,6 @@
             font-size: 40px;
             text-align: center;
         }
-
     </style>
 </head>
 
@@ -120,16 +127,9 @@
             camera.wheelPrecision = 50;
 
             //Mouse wheel zoom range
-            //Zoom-in limit
             camera.lowerRadiusLimit = 2.75;
             //Zoom-out limit
             camera.upperRadiusLimit = 8;
-
-            //Create initial mesh variables. 
-            var mesh1;
-            var mesh2;
-            var mesh3;
-            var mesh4;
 
             // First mesh import
             BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "Axe1.2.glb", scene, function (axe1) {
@@ -154,43 +154,32 @@
                 mesh4.position.x = -4;
             });
             //import iron cast
-            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "iron_final1.glb", scene, function (tooth) {
-                mesh5 = tooth[0];
+            BABYLON.SceneLoader.ImportMesh("", "3dmodels/", "iron_final1.glb", scene, function (iron) {
+                mesh5 = iron[0];
                 mesh5.position.x = 4;
             });
 
             // Spheres for the UI buttons to focus on 
             var sphere1 = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
             sphere1.isVisible = false;
-            sphere1.position.y = 0;
             sphere1.position.z = 4;
-            sphere1.position.x = 0;
 
             var sphere2 = BABYLON.Mesh.CreateSphere("sphere2", 16, 1, scene);
             sphere2.isVisible = false;
-            sphere2.position.y = 0;
-            sphere2.position.z = 0;
-            sphere2.position.x = 0;
 
             var sphere3 = BABYLON.Mesh.CreateSphere("sphere3", 16, 1, scene);
             sphere3.isVisible = false;
-            sphere3.position.y = 0;
             sphere3.position.z = -4;
-            sphere3.position.x = 0;
 
             var sphere4 = BABYLON.Mesh.CreateSphere("sphere4", 16, 1, scene);
             sphere4.isVisible = false;
-            sphere4.position.y = 0;
-            sphere4.position.z = 0;
-            sphere4.position.x = -4;            
+            sphere4.position.x = -4;
 
             var sphere5 = BABYLON.Mesh.CreateSphere("sphere5", 16, 1, scene);
             sphere5.isVisible = false;
-            sphere5.position.y = 0;
-            sphere5.position.z = 0;
-            sphere5.position.x = 4;  
+            sphere5.position.x = 4;
 
-           // HDRIs
+            // HDRIs
             var hdrTextures = [
                 new BABYLON.CubeTexture("textures/outside.env", scene),
                 new BABYLON.CubeTexture("textures/outside2.env", scene),
@@ -211,20 +200,19 @@
             button.innerHTML = "Change background";
             button.style.position = "fixed";
             button.style.top = "50%";
-            button.style.transform = "translateY(-50%)";    
-            button.style.borderRadius = "14px"; 
+            button.style.transform = "translateY(-50%)";
+            button.style.borderRadius = "14px";
             button.style.border = "4px solid white";
             button.style.right = "0px";
             button.style.margin = "25px";
 
-            button.style.width = "110px";    
-            button.style.height = "60px";   
+            button.style.width = "110px";
+            button.style.height = "60px";
 
             button.style.backgroundColor = "black";
             button.style.color = "white";
 
             document.body.appendChild(button);
-
 
             // Switch to the next HDRI when the button is clicked
             button.addEventListener("click", function () {
@@ -238,159 +226,63 @@
                 sky = scene.createDefaultSkybox(hdrTextures[currentTextureIndex], true, 1000, 0.3);
             });
 
+        var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
-            //var hdrTexture = new BABYLON.CubeTexture("textures/outside.env", scene);
-            //var sky = scene.createDefaultSkybox(hdrTexture, true);
-
-            // GUI
-            var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); //Axe 1 button
-            var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); //Axe 2 button
-            var advancedTexture3 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); //Axe 3 button
-            var advancedTexture4 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); //Tooth button
-            var advancedTexture5 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); //Iron object button
-
-            //Button A
-            var buttonA = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
-            advancedTexture.addControl(buttonA);
-
-            buttonA.width = "35px"
-            buttonA.height = "35px";
-            buttonA.cornerRadius = 30;
-            buttonA.background = "transparent";
-            buttonA.linkWithMesh(sphere1);
-
-            //Button Funtionality
-            buttonA.onPointerEnterObservable.add(function () {
-                buttonA.background = "grey";
+        function createButton(texture, mesh, camera) {
+            var button = BABYLON.GUI.Button.CreateImageOnlyButton("", texture);
+            advancedTexture.addControl(button);
+            button.width = "35px";
+            button.height = "35px";
+            button.cornerRadius = 30;
+            button.background = "transparent";
+            button.linkWithMesh(mesh);
+            button.onPointerEnterObservable.add(function () {
+                button.background = "grey";
             });
-            buttonA.onPointerOutObservable.add(function () {
-                buttonA.background = "transparent";
+            button.onPointerOutObservable.add(function () {
+                button.background = "transparent";
             });
-            buttonA.onPointerUpObservable.add(function () {
-                camera.target = sphere1;
+            button.onPointerUpObservable.add(function () {
+                camera.target = mesh;
             });
+        }
 
-            //Button B
-            var buttonB = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
-            advancedTexture2.addControl(buttonB);
-            buttonB.width = "35px"
-            buttonB.height = "35px";
-            buttonB.cornerRadius = 30;
-            buttonB.background = "transparent";
-            buttonB.linkWithMesh(sphere2);
+        createButton("textures/clickme.png", sphere1, camera);
+        createButton("textures/clickme.png", sphere2, camera);
+        createButton("textures/clickme.png", sphere3, camera);
+        createButton("textures/clickme.png", sphere4, camera);
+        createButton("textures/clickme.png", sphere5, camera);
 
-            //Button Funtionality
-            buttonB.onPointerEnterObservable.add(function () {
-                buttonB.background = "grey";
-            });
-            buttonB.onPointerOutObservable.add(function () {
-                buttonB.background = "transparent";
-            });
-            buttonB.onPointerUpObservable.add(function () {
-                camera.target = sphere2;
-            });
+        const image = new BABYLON.GUI.Image("", "textures/instructions.png");
+        image.width = "25%";
+        image.height = "25%";
+        image.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        image.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+        advancedTexture.addControl(image);
 
-            //Button C
-            var buttonC = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
-            advancedTexture3.addControl(buttonC);
-            buttonC.width = "35px"
-            buttonC.height = "35px";
-            buttonC.cornerRadius = 30;
-            buttonC.background = "transparent";
-            buttonC.linkWithMesh(sphere3);
+        return scene;
+    };
 
-            //Button Funtionality
-            buttonC.onPointerEnterObservable.add(function () {
-                buttonC.background = "grey";
-            });
-            buttonC.onPointerOutObservable.add(function () {
-                buttonC.background = "transparent";
-            });
-            buttonC.onPointerUpObservable.add(function () {
-                camera.target = sphere3;
-            });
-
-            //Button D
-            var buttonD = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
-            advancedTexture4.addControl(buttonD);
-
-            buttonD.width = "35px"
-            buttonD.height = "35px";
-            buttonD.cornerRadius = 30;
-            buttonD.background = "transparent";
-            buttonD.linkWithMesh(sphere4);
-
-            //Button Funtionality
-            buttonD.onPointerEnterObservable.add(function () {
-                buttonD.background = "grey";
-            });
-            buttonD.onPointerOutObservable.add(function () {
-                buttonD.background = "transparent";
-            });
-            buttonD.onPointerUpObservable.add(function () {
-                camera.target = sphere4;
-            });
-
-            //Button E
-            var buttonE = BABYLON.GUI.Button.CreateImageOnlyButton("", "textures/clickme.png");
-            advancedTexture5.addControl(buttonE);
-
-            buttonE.width = "35px"
-            buttonE.height = "35px";
-            buttonE.cornerRadius = 30;
-            buttonE.background = "transparent";
-            buttonE.linkWithMesh(sphere5);
-
-            //Button Funtionality
-            buttonE.onPointerEnterObservable.add(function () {
-                buttonE.background = "grey";
-            });
-            buttonE.onPointerOutObservable.add(function () {
-                buttonE.background = "transparent";
-            });
-            buttonE.onPointerUpObservable.add(function () {
-                camera.target = sphere5;
-            });
-
-
-            // instrctions
-            const image = new BABYLON.GUI.Image("", "textures/instructions.png");
-            image.width = "25%";
-            image.height = "25%";
-            image.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-            image.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
-
-            // Add the image to the UI
-            advancedTexture.addControl(image);
-
-
-            return scene;
-        };
-        window.initFunction = async function () {
-
-
-            var asyncEngineCreation = async function () {
-                try {
-                    return createDefaultEngine();
-                } catch (e) {
-                    console.log("the available createEngine function failed. Creating the default engine instead");
-                    return createDefaultEngine();
-                }
+    window.initFunction = async function () {
+        var asyncEngineCreation = async function () {
+            try {
+                return createDefaultEngine();
+            } catch (e) {
+                console.log("the available createEngine function failed. Creating the default engine instead");
+                return createDefaultEngine();
             }
-
-            window.engine = await asyncEngineCreation();
-            if (!engine) throw 'engine should not be null.';
-            startRenderLoop(engine, canvas);
-            window.scene = createScene();
-        };
-        initFunction().then(() => {
-            sceneToRender = scene
-        });
-
-        // Resize
-        window.addEventListener("resize", function () {
-            engine.resize();
-        });
+        }
+        window.engine = await asyncEngineCreation();
+        if (!engine) throw 'engine should not be null.';
+        startRenderLoop(engine, canvas);
+        window.scene = createScene();
+    };
+    initFunction().then(() => {
+        sceneToRender = scene
+    });
+    window.addEventListener("resize", function () {
+        engine.resize();
+    });
     </script>
 </body>
 
