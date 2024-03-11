@@ -162,14 +162,14 @@
             // Spheres for the UI buttons to focus on 
             var sphere1 = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
             sphere1.isVisible = false;
-            sphere1.position.z = 4;
+            sphere1.position.z = -4;
 
             var sphere2 = BABYLON.Mesh.CreateSphere("sphere2", 16, 1, scene);
             sphere2.isVisible = false;
 
             var sphere3 = BABYLON.Mesh.CreateSphere("sphere3", 16, 1, scene);
             sphere3.isVisible = false;
-            sphere3.position.z = -4;
+            sphere3.position.z = 4;
 
             var sphere4 = BABYLON.Mesh.CreateSphere("sphere4", 16, 1, scene);
             sphere4.isVisible = false;
@@ -230,31 +230,77 @@
 
         var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
-        function createButton(texture, mesh, camera) {
-            var button = BABYLON.GUI.Button.CreateImageOnlyButton("", texture);
-            advancedTexture.addControl(button);
-            button.width = "35px";
-            button.height = "35px";
-            button.cornerRadius = 30;
-            button.background = "transparent";
-            button.linkWithMesh(mesh);
-            button.onPointerEnterObservable.add(function () {
-                button.background = "grey";
-            });
-            button.onPointerOutObservable.add(function () {
+        var buttons = []; 
+
+            function createButton(texture, mesh, camera, imagePath) {
+                var button = BABYLON.GUI.Button.CreateImageOnlyButton("", texture);
+                advancedTexture.addControl(button);
+                button.width = "35px";
+                button.height = "35px";
+                button.cornerRadius = 30;
                 button.background = "transparent";
-            });
-            button.onPointerUpObservable.add(function () {
-                camera.target = mesh;
-            });
-        }
+                button.linkWithMesh(mesh);
+                button.thickness = 0;
 
-        createButton("textures/clickme.png", sphere1, camera);
-        createButton("textures/clickme.png", sphere2, camera);
-        createButton("textures/clickme.png", sphere3, camera);
-        createButton("textures/clickme.png", sphere4, camera);
-        createButton("textures/clickme.png", sphere5, camera);
+                // Store the original image source in the button
+                button.originalSource = texture;
 
+                // Add the button to the array
+                buttons.push(button);
+
+                // Create a rectangle for the popup
+                var popup = new BABYLON.GUI.Rectangle();
+                popup.width = "20%";
+                popup.height = "40%";
+                popup.color = "white";
+                popup.thickness = 4;
+                popup.background = "black";
+                popup.isVisible = false; // Hide the popup initially
+                popup.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                popup.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+
+                // Create an image for the popup
+                var image = new BABYLON.GUI.Image("", imagePath);
+                image.width = "500px";
+                image.height = "500px";
+                popup.addControl(image); // Add the image to the popup
+
+                advancedTexture.addControl(popup); // Add the popup to the GUI
+
+                // Create a second, transparent texture
+                var transparentTexture = "textures/clickmetransparent.png";
+
+                button.onPointerEnterObservable.add(function () {
+                    button.background = "grey";
+                    popup.isVisible = true; // Show the popup when the pointer enters the button
+
+                    // Make all buttons transparent
+                    buttons.forEach(function (btn) {
+                        btn.image.source = transparentTexture;
+                    });
+                });
+
+                button.onPointerOutObservable.add(function () {
+                    button.background = "transparent";
+                    popup.isVisible = false; // Hide the popup when the pointer leaves the button
+
+                    // Make all buttons opaque
+                    buttons.forEach(function (btn) {
+                        btn.image.source = btn.originalSource; // Use the stored original source
+                    });
+                });
+
+                button.onPointerUpObservable.add(function () {
+                    camera.target = mesh;
+                });
+            }
+            createButton("textures/clickme.png", sphere1, camera, "textures/axe1image.png");
+            createButton("textures/clickme.png", sphere2, camera, "textures/axe2image.png");
+            createButton("textures/clickme.png", sphere3, camera, "textures/axe3image.jpg");
+            createButton("textures/clickme.png", sphere4, camera, "textures/tooth.jpg");
+            createButton("textures/clickme.png", sphere5, camera, "textures/iron.jpg");
+
+        //Instructions
         const image = new BABYLON.GUI.Image("", "textures/instructions.png");
         image.width = "25%";
         image.height = "25%";
