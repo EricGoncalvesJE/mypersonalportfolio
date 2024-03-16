@@ -193,7 +193,7 @@
             var currentTextureIndex = 0;
             var sky = scene.createDefaultSkybox(hdrTextures[currentTextureIndex], true, 1000, 0.3);
 
-            // Create a button
+          // Create a button
             var advancedTexture6 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
             var button = document.createElement("button");
@@ -205,13 +205,11 @@
             button.style.border = "5px dashed white";
             button.style.right = "0px";
             button.style.margin = "25px";
-
-            button.style.width = "220px";
-            button.style.height = "120px";
-
+            button.style.width = "20%";
+            button.style.height = "15%";
             button.style.backgroundColor = "black";
             button.style.color = "white";
-            button.style.fontSize = "35px";
+            button.style.fontSize = "2vw"; // Use viewport width units for the font size
 
             document.body.appendChild(button);
 
@@ -250,19 +248,18 @@
 
                 // Create a rectangle for the popup
                 var popup = new BABYLON.GUI.Rectangle();
-                popup.width = "20%";
-                popup.height = "40%";
-                popup.color = "white";
-                popup.thickness = 4;
-                popup.background = "black";
+                popup.width = "30%";
+                popup.height = "50%";
+                popup.thickness = 0;
+                popup.background = "transparent";
                 popup.isVisible = false; // Hide the popup initially
                 popup.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
                 popup.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
 
                 // Create an image for the popup
                 var image = new BABYLON.GUI.Image("", imagePath);
-                image.width = "500px";
-                image.height = "500px";
+                image.width = "400px";
+                image.height = "400px";
                 popup.addControl(image); // Add the image to the popup
 
                 advancedTexture.addControl(popup); // Add the popup to the GUI
