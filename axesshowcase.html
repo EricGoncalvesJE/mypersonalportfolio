@@ -260,16 +260,16 @@
                 var image = new BABYLON.GUI.Image("", imagePath);
                 image.width = "400px";
                 image.height = "400px";
-                popup.addControl(image); // Add the image to the popup
+                popup.addControl(image);
 
-                advancedTexture.addControl(popup); // Add the popup to the GUI
+                advancedTexture.addControl(popup);
 
                 // Create a second, transparent texture
                 var transparentTexture = "textures/clickmetransparent.png";
 
                 button.onPointerEnterObservable.add(function () {
                     button.background = "grey";
-                    popup.isVisible = true; // Show the popup when the pointer enters the button
+                    popup.isVisible = true; 
 
                     // Make all buttons transparent
                     buttons.forEach(function (btn) {
@@ -281,7 +281,6 @@
                     button.background = "transparent";
                     popup.isVisible = false; // Hide the popup when the pointer leaves the button
 
-                    // Make all buttons opaque
                     buttons.forEach(function (btn) {
                         btn.image.source = btn.originalSource; // Use the stored original source
                     });
@@ -291,9 +290,9 @@
                     camera.target = mesh;
                 });
             }
-            createButton("textures/clickme.png", sphere1, camera, "textures/axe1image.png");
+            createButton("textures/clickme.png", sphere1, camera, "textures/axe3image.png");
             createButton("textures/clickme.png", sphere2, camera, "textures/axe2image.png");
-            createButton("textures/clickme.png", sphere3, camera, "textures/axe3image.jpg");
+            createButton("textures/clickme.png", sphere3, camera, "textures/axe1image.jpg");
             createButton("textures/clickme.png", sphere4, camera, "textures/tooth.jpg");
             createButton("textures/clickme.png", sphere5, camera, "textures/iron.jpg");
 
